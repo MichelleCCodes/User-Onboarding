@@ -10,5 +10,5 @@ export default yup.object().shape({
     .string()
     .required("password is required"),
   //This is all we need for checkboxes
-  agree: yup.boolean(),
+  agree: yup.boolean().oneOf([true], "Must agree to terms"),
 });

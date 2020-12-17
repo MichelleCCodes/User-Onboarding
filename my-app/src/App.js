@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import Form from './Form';
+import User from './User';
 import React, { useState, useEffect } from 'react';
 import schema from "./formSchema";
 import axios from "axios";
@@ -34,17 +34,17 @@ const [formValues, setFormValues] = useState(initialFormValues);//object
 const [formErrors, setFormErrors] = useState(initialFormErrors);//object
 const [disabled, setDisabled] =useState(initialDisabled);//boolean
 
- //////////////// HELPER FUNCTIONS ////////////////
+//////////////// HELPER FUNCTIONS ////////////////
 
 //AXIOS GET REQUEST 
 const getUsers = () => {
 axios 
   .get("https://reqres.in/api/users")
   .then(res => {
-    setFriends(res.data);
+    setUsers(res.data);
   })
-  .catch(err => {
-    console.log(error);
+  .catch( error => {
+    console.log('error!');
   })
 }
 
@@ -52,8 +52,8 @@ axios
 const postNewUser = (newUser) => {
 axios.post('https://reqres.in/api/users', newUser)
 .then(res => {
-  setUsers([res.data,...friends]);
-  setFormValues(initalFormValues); 
+  setUsers([res.data,...users]);
+  setFormValues(initialFormValues); 
 })
 .catch(err => {
   console.log(err)
@@ -88,7 +88,6 @@ const formSubmit = () => {
     name: formValues.name.trim(), 
     email: formValues.email.trim(), 
     password: formValues.password.trim(),
-    //agree to terms? 
   }
 
   postNewUser(newUser);
@@ -110,11 +109,20 @@ useEffect( ()=> {
       <header>
         <h1>Sign Up With Us!</h1>
       </header>
-      <Form />
+
+      <Form 
+      values={formValues}
+      change={inputChange}
+      submit={formSubmit}
+      disabled={disabled}
+      errors={formErrors}
+      />
+
+      {/* {users.map(user => {
+        return <User key={user.name} details={user} />;
+      })} */}
     </div>
   );
 }
 
 export default App;
-
-// remember to pass props in the components 
